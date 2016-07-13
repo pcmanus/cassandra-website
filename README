@@ -1,0 +1,48 @@
+Apache Cassandra website sources
+================================
+
+Prerequisite
+------------
+
+The site depends on Jekyll (https://jekyllrb.com/) which should be installed.
+
+Updating the site
+-----------------
+
+The documentation part of the website is automatically generated from the sphinx documentation in the Cassandra source
+repository. If you want to update anything else that the doc, you only have to:
+
+* Make your edits
+* Test locally: `make serve`
+* Compile for real `make`
+* Commit
+
+If you need however to update the doc, you need to "import" the doc before rebuilding the website using:
+```
+CASSANDRA_DIR=<path to your C* source dir> make gen-doc
+```
+Note that the CASSANDRA_DIR is used to tell the Makefile where to find the doc. It should point to the Cassandra git
+source repository, and said repository should be checkout on the branch from which you want to import the doc (pro-tip:
+export CASSANDRA_DIR in your bashrc/zhshrc/whatev so you don't have to provide it each time).
+
+Layout
+------
+
+Outside of the documentation discussed above, the website is only a few pages that are at top-level. The `index.html`
+file is the landing page, and other pages are markdown processed by Jekyll (the index page isn't markdown because it's
+layout is slightly more fancy).
+
+Further, the `_data/` directory contains "data" used by the pages. Mainly, the `_data/releases.yaml` file contains the
+versions and release dates of the currently released version. It's the file to edit when a new release is published.
+
+The documentation, when imported (by `make gen-doc`), is in the `doc/` directory. As those files are generated, you
+should **not** edit anything in that directory.
+
+The rest of the layout is standard to Jekyll:
+
+* `_layout/` contains the page (full) layouts.
+* `_includes/` contains fragments used by the different layouts (that's where the header, navigation and footer are).
+* `css/`, `js/` and `img/` are what ones would expect (they are included as-is by Jekyll).
+* `_sass/` is to `css/` what `_includes` is to `_layout`; it contains sass fragments imported by the main css files
+  (currently only the pygments theme for syntax highligthing in the documentation).
+* `_plugins/` contains a tiny plugin that make it easier to input download links in the `download.md` file.
